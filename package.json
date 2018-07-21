@@ -1,0 +1,30 @@
+{
+  "name": "mongodb-get-props",
+  "version": "0.0.1",
+  "description": "Returns properties names for mongodb collections.",
+  "main": "index.js",
+  "scripts": {
+    "test": "ava"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/indatawetrust/mongodb-get-props.git"
+  },
+  "keywords": [
+    "mongodb",
+    "get",
+    "props",
+    "properties"
+  ],
+  "author": "indatawetrust",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/indatawetrust/mongodb-get-props/issues"
+  },
+  "homepage": "https://github.com/indatawetrust/mongodb-get-props#readme",
+  "devDependencies": {
+    "ava": "^0.25.0",
+    "faker": "^4.1.0",
+    "mongodb": "^3.1.1"
+  }
+}
