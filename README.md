@@ -1,6 +1,9 @@
 [![Build Status](https://travis-ci.org/indatawetrust/mongodb-get-props.svg?branch=master)](https://travis-ci.org/indatawetrust/mongodb-get-props)
 
 #### install
+```
+npm i mongodb-get-props --save
+```
 
 #### usage
 ```js
