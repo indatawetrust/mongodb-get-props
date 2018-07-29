@@ -1,6 +1,6 @@
 {
   "name": "mongodb-get-props",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Returns properties names for mongodb collections.",
   "main": "index.js",
   "scripts": {

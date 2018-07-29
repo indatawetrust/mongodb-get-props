@@ -41,6 +41,6 @@ test('#test', async t => {
 
   props.push('_id')
 
-  t.deepEqual(props.sort((prev, next) => prev > next), (await getProps(client.db(dbName), `test-${collectionName}`)).sort((prev, next) => prev > next))
+  t.deepEqual(props.sort((prev, next) => prev > next), (Object.keys(await getProps(client.db(dbName), `test-${collectionName}`))).sort((prev, next) => prev > next))
 
 });
