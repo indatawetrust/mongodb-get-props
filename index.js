@@ -18,17 +18,22 @@ module.exports = (db, collection) => new Promise((resolve, reject) => {
     .toArray()
     .then(props => {
 
-      db.collection(collection).aggregate([
-        {
-          $project: props.map(prop => ({[prop._id]: {$type: `$${prop._id}`}})).reduce((prev, next) => Object.assign(prev, next))
-        }, {
-          $limit: 1
-        }
-      ])
-      .toArray()
-      .then(props => props[0])
-      .then(resolve)
-      .catch(reject)
+      if (props.length) {
+        db.collection(collection).aggregate([
+          {
+            $project:
+            props.map(prop => ({[prop._id]: {$type: `$${prop._id}`}})).reduce((prev, next) => Object.assign(prev, next))
+          }, {
+            $limit: 1
+          }
+        ])
+        .toArray()
+        .then(props => props[0])
+        .then(resolve)
+        .catch(reject)
+      } else {
+        resolve({})
+      }
 
     })
     .catch(reject)
