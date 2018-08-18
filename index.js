@@ -19,7 +19,12 @@ module.exports = (db, collection) => new Promise((resolve, reject) => {
     .then(props => {
 
       if (props.length) {
+        
         db.collection(collection).aggregate([
+          {
+            $match:
+            props.map(prop => ({[prop._id]: {$exists: true}})).reduce((prev, next) => Object.assign(prev, next))
+          },
           {
             $project:
             props.map(prop => ({[prop._id]: {$type: `$${prop._id}`}})).reduce((prev, next) => Object.assign(prev, next))

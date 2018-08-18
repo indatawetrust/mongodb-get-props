@@ -37,7 +37,14 @@ test('#test', async t => {
 
     return await client.db(dbName).collection(`test-${collectionName}`).insertOne(data)
 
-  }))).map(message => message.result))
+  }))).map(message => {
+
+    delete message.result.electionId
+    delete message.result.opTime
+
+    return message.result
+
+  }))
 
   props.push('_id')
 
