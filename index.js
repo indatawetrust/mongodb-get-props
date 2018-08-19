@@ -32,6 +32,7 @@ module.exports = (db, collection) =>
 
       collection_props
         .find()
+        .limit(1000)
         .toArray()
         .then(props => {
           if (props.length) {
