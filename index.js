@@ -59,6 +59,9 @@ module.exports = (db, collection) =>
                     .map(prop => ({[prop._id]: {$type: `$${prop._id}`}}))
                     .reduce((prev, next) => Object.assign(prev, next)),
                 },
+                {
+                  $limit: 1000
+                }
               ])
               .toArray()
               .then(props => {
