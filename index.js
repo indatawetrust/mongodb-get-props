@@ -4,7 +4,9 @@ module.exports = (db, collection) =>
   new Promise((resolve, reject) => {
     const objFilter = obj =>
       _.pickBy(obj, (value, key) => {
-        return !(['null', null, 'missing', 'undefined', undefined].indexOf(value) > -1);
+        return !(['null', null, 'missing', 'undefined', undefined].indexOf(
+          value,
+        ) > -1);
       });
 
     const customizer = (objValue, srcValue) => {
@@ -28,52 +30,54 @@ module.exports = (db, collection) =>
     db.collection(collection).mapReduce(map, reduce, {
       out: collection + '_keys',
     }, (err, collection_props) => {
-      if (err) reject(err);
-
-      collection_props
-        .find()
-        .limit(1000)
-        .toArray()
-        .then(props => {
-          if (props.length) {
-            db
-              .collection(collection)
-              .aggregate([
-                {
-                  $match: {
-                    $or: [
-                      {
-                        _id: {
-                          $in: props
-                            .filter(prop => objectid.test(prop.value))
-                            .map(prop => prop.value),
+      if (err || !collection_props) {
+        reject(err);
+      } else {
+        collection_props
+          .find()
+          .limit(1000)
+          .toArray()
+          .then(props => {
+            if (props.length) {
+              db
+                .collection(collection)
+                .aggregate([
+                  {
+                    $match: {
+                      $or: [
+                        {
+                          _id: {
+                            $in: props
+                              .filter(prop => objectid.test(prop.value))
+                              .map(prop => prop.value),
+                          },
                         },
-                      },
-                      props
-                        .map(prop => ({[prop._id]: {$exists: true}}))
-                        .reduce((prev, next) => Object.assign(prev, next)),
-                    ],
+                        props
+                          .map(prop => ({[prop._id]: {$exists: true}}))
+                          .reduce((prev, next) => Object.assign(prev, next)),
+                      ],
+                    },
                   },
-                },
-                {
-                  $project: props
-                    .map(prop => ({[prop._id]: {$type: `$${prop._id}`}}))
-                    .reduce((prev, next) => Object.assign(prev, next)),
-                },
-                {
-                  $limit: 1000
-                }
-              ])
-              .toArray()
-              .then(props => {
-                return defaults(...props.map(objFilter));
-              })
-              .then(resolve)
-              .catch(reject);
-          } else {
-            resolve({});
-          }
-        })
-        .catch(reject);
+                  {
+                    $project: props
+                      .map(prop => ({[prop._id]: {$type: `$${prop._id}`}}))
+                      .reduce((prev, next) => Object.assign(prev, next)),
+                  },
+                  {
+                    $limit: 1000,
+                  },
+                ])
+                .toArray()
+                .then(props => {
+                  return defaults(...props.map(objFilter));
+                })
+                .then(resolve)
+                .catch(reject);
+            } else {
+              resolve({});
+            }
+          })
+          .catch(reject);
+      }
     });
   });

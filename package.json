@@ -1,10 +1,13 @@
 {
   "name": "mongodb-get-props",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "Returns properties names for mongodb collections.",
   "main": "index.js",
   "scripts": {
     "test": "ava"
+  },
+  "bin": {
+    "mgp": "cli.js"
   },
   "repository": {
     "type": "git",
@@ -25,9 +28,10 @@
   "devDependencies": {
     "ava": "^0.25.0",
     "faker": "^4.1.0",
-    "mongodb": "^3.1.1"
+    "mongodb": "^3.2.3"
   },
   "dependencies": {
-    "lodash": "^4.17.10"
+    "lodash": "^4.17.10",
+    "yargs": "^13.2.2"
   }
 }
